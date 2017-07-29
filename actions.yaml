@@ -1,214 +1,426 @@
 ---
-
-Critical:
-  # Critical Actions are ones that no-one has any business changing after the fact. These are good candidates for alerting and worth applying a DENY policy to
-  - cloudtrail:DeleteTrail
-  - cloudtrail:StopLogging
-  - cloudtrail:UpdateTrail
-  - cloudtrail:PutEventSelectors
-  - iam:DeleteAccountPasswordPolicy:
-    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteAccountPasswordPolicy.html
-  - iam:UpdateAccountPasswordPolicy:
-    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccountPasswordPolicy.html
-
-Rare:
-  - iam:CreateSAMLProvider:
-    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateSAMLProvider.html
-  - iam:UpdateSAMLProvider:
-    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateSAMLProvider.html
-  - iam:CreateAccountAlias:
-    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
-    RelatedAPICalls:
-      - iam:DeleteAccountAlias
-
-High: 
-  - iam:PutRolePolicy:
-      Category: AccessControl
-      Description: This action allows a user to assign permissions to a role. Can be used for privilege escalation
-      Risk: PrivilegeEscalation
-  
-
-
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_CreateAccount.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_InviteAccountToOrganization.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_LeaveOrganization.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_RemoveAccountFromOrganization.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_AcceptHandshake.html
-
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_DeletePolicy.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_UpdatePolicy.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_MoveAccount.html
-# http://docs.aws.amazon.com/organizations/latest/APIReference/API_DetachPolicy.html
-
-
-
-  - ec2:AcceptVpcPeeringConnection:
-      Category: NetworkSecurity
-      Description: This action allows a user to peer various VPC networks
-      Risk: NetworkSegmentationViolation
-      RelatedAPICalls:
-      - ec2:DeleteVpcPeeringConnection
-      - ec2:RejectVpcPeeringConnection
-      - ec2:CreateVpcPeeringConnection
-  - ec2:CreateVpcPeeringConnection:
-    Category: NetworkSecurity
-    Description: This action allows a user to peer various VPC networks
-    Risk: NetworkSegmentationViolation
-    RelatedAPICalls:
-    - ec2:DeleteVpcPeeringConnection
-    - ec2:RejectVpcPeeringConnection
-    - ec2:AcceptVpcPeeringConnection
-
-
-  - ec2:AttachInternetGateway:
-      Category: NetworkSecurity
-      Description: This action allows a user to open a VPC to direct internet access
-      Risk: DataLossPrevention
-      RelatedAPICalls:
-      - ec2:DetachInternetGateway
-      - ec2:CreateInternetGateway
-      - ec2:DeleteInternetGateway
-  - ec2:CreateVpcEndpoint:
-      Category: NetworkSecurity
-      Description: This action allows a user to open a VPC directly to S3, bypassing any firewall or CASB.
-      Risk: DataLossPrevention
-      RelatedAPICalls:
-        - ec2:ModifyVpcEndpoint
-        - ec2:DeleteVpcEndpoints
-  - ec2:ModifyVpcEndpoint:
-      Category: NetworkSecurity
-      Description: This action allows a user to open a VPC directly to S3, bypassing any firewall or CASB.
-      Risk: DataLossPrevention
-      RelatedAPICalls:
-        - ec2:CreateVpcEndpoint
-        - ec2:DeleteVpcEndpoints
-  - ec2:AttachVpnGateway:
-      Category: NetworkSecurity
-      Description: This action allows a user to link a cloud network (VPC) with an on-prem network
-      Risk: NetworkSegmentationViolation 
-      RelatedAPICalls:   
-      - ec2:DetachVpnGateway
-      - ec2:CreateVpnGateway
-      - ec2:DeleteVpnGateway
-  - ec2:CreateVpnConnection:
-      Category: NetworkSecurity
-      Description: This action allows a user to link a cloud network with an on-prem network
-      Risk: NetworkSegmentationViolation
-      RelatedAPICalls:
-      - ec2:DeleteVpnConnection
-
-  - ec2:AssociateDhcpOptions:
-      Category: NetworkSecurity
-      Description: This action allows a user to modify DNS settings or NTP server Settings to facilitate a host based attack
-      Risk: Idunno.
-      RelatedAPICalls:
-      - ec2:CreateDhcpOptions
-      - ec2:DeleteDhcpOptions
-
-  - ec2:AssociateRouteTable:
-    Category: NetworkSecurity
-    Description: This action allows a user to modify routes bypassing security controls
-    Risk: 
-      - NetworkSegmentationViolation
-      - DataLossPrevention
-    RelatedAPICalls:
-    - ec2:CreateRouteTable
-    - ec2:DeleteRouteTable
-  - ec2:ReplaceRouteTableAssociation:
-    Category: NetworkSecurity
-    Description: This action allows a user to modify routes bypassing security controls
-    Risk: 
-      - NetworkSegmentationViolation
-      - DataLossPrevention
-    RelatedAPICalls:
-    - ec2:CreateRouteTable
-    - ec2:DeleteRouteTable
-  - ec2:DisassociateRouteTable:
-    Category: NetworkSecurity
-    Description: This action allows a user to modify routes bypassing security controls
-    Risk: 
-      - NetworkSegmentationViolation
-      - DataLossPrevention
-    RelatedAPICalls:
-    - ec2:CreateRouteTable
-    - ec2:DeleteRouteTable
-
-  - ec2:CreateRoute:
-  - ec2:DeleteRoute:
-  - ec2:ReplaceRoute:
-
-
-  - ec2:CreateVpnConnectionRoute:
-  - ec2:DeleteVpnConnectionRoute:
-  - ec2:DisableVgwRoutePropagation:
-  - ec2:EnableVgwRoutePropagation:
-
-
-
-  - ec2:ModifySubnetAttribute:
-    Category: NetworkSecurity
-    Description: This action allows a user to enable instances to get public IP addresses by default
-    Risk: 
-      - NetworkSegmentationViolation
-      - DataLossPrevention
-
-
-
-  - ec2:CreateNetworkAcl:
-  - ec2:CreateNetworkAclEntry:
-  - ec2:DeleteNetworkAcl:
-  - ec2:DeleteNetworkAclEntry:
-  - ec2:ReplaceNetworkAclAssociation:
-  - ec2:ReplaceNetworkAclEntry:
-
-
-
-
-Medium:
-  - ec2:CreateKeyPair:
-      Category: AccessControl
-      Description: This action allows a user create themselves an SSH keypair for access to an EC2 Instance. If this key is not properly managed, access to the instance by authorized personnell can be impaired
-      Risk: PrivilegeEscalation
-      RelatedAPICalls:
-      - ec2:DeleteKeyPair
-      - ec2:ImportKeyPair
-  - ec2:ImportKeyPair:
-      Category: AccessControl
-      Description: This action allows a user create themselves an SSH keypair for access to an EC2 Instance. If this key is not properly managed, access to the instance by authorized personnell can be impaired
-      Risk: PrivilegeEscalation
-      RelatedAPICalls:
-      - ec2:DeleteKeyPair
-      - ec2:CreateKeyPair
-
-  - ec2:PurchaseReservedInstancesOffering:
-    Category: Compliance
-    Description: This action allows a user to commit purchase an RI thus commiting your organization to a higher cost
-    Risk: 
-      - FinancialControl
-  - aws-marketplace:Subscribe:
+aws-marketplace:
+  Subscribe:
     Category: Compliance
     Description: This action allows a user to commit purchase a marketplace image and accept the terms & services from the marketplace vendor
     Risk: 
       - FinancialControl
       - LegalControl
+    Severity: medium
 
-  - ec2:AssociateAddress:
+cloudtrail:
+  DeleteTrail:
+    Category: Audit
+    Description: This action would allow an attacker to hide his action by disabling the primary logging mechanism in AWS
+    Risk: 
+    - EvidenceDestruction
+    Severity: critical
+  PutEventSelectors:
+    Category: Audit
+    Description: This action would allow an attacker to hide his action by disabling the level of detail and types of events logged by CloudTrail
+    Risk: 
+    - EvidenceDestruction    
+    Severity: critical
+  StopLogging:
+    Category: Audit
+    Description: This action would allow an attacker to hide his action by disabling the primary logging mechanism in AWS
+    Risk: 
+    - EvidenceDestruction
+    Severity: critical
+  UpdateTrail:
+    Category: Audit
+    Description: This action might allow an attacker to hide his action by disabling or altering the primary logging mechanism in AWS
+    Risk: 
+    - EvidenceDestruction
+    Severity: critical
+
+ec2:
+  AcceptVpcPeeringConnection:
+    Category: NetworkSecurity
+    Description: This action allows a user to peer various VPC networks
+    RelatedAPICalls:
+    - ec2:DeleteVpcPeeringConnection
+    - ec2:RejectVpcPeeringConnection
+    - ec2:CreateVpcPeeringConnection
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  AssociateAddress:
     Category: HostSecurity
     Description: This actions attaches a public IP address to an EC2 Instance
-  - ec2:AssociateIamInstanceProfile:
+    Risk: NetworkExposure
+    Severity: medium
+  AssociateDhcpOptions:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify DNS settings or NTP server Settings to facilitate a host based attack
+    RelatedAPICalls:
+    - ec2:CreateDhcpOptions
+    - ec2:DeleteDhcpOptions
+    Risk: Idunno.
+    Severity: high
+  AssociateIamInstanceProfile:
+    Category: IdentityManagement
+    Description: Associates IAM permissions to an EC2 Instance and any user or application running on the instance
+    Risk: AccountTakeOver
+    Severity: medium
     URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AssociateIamInstanceProfile.html
+  AttachInternetGateway:
+    Category: NetworkSecurity
+    Description: This action allows a user to open a VPC to direct internet access
+    RelatedAPICalls:
+    - ec2:DetachInternetGateway
+    - ec2:CreateInternetGateway
+    - ec2:DeleteInternetGateway
+    Risk: DataLossPrevention
+    Severity: high
+  AssociateRouteTable:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes bypassing security controls
+    RelatedAPICalls:
+    - ec2:CreateRouteTable
+    - ec2:DeleteRouteTable
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+  AttachVpnGateway:
+    Category: NetworkSecurity
+    Description: This action allows a user to link a cloud network (VPC) with an on-prem network
+    RelatedAPICalls:   
+    - ec2:DetachVpnGateway
+    - ec2:CreateVpnGateway
+    - ec2:DeleteVpnGateway
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  CreateKeyPair:
+    Category: AccessControl
+    Description: This action allows a user create themselves an SSH keypair for access to an EC2 Instance. If this key is not properly managed, access to the instance by authorized personnell can be impaired
+    RelatedAPICalls:
+    - ec2:DeleteKeyPair
+    - ec2:ImportKeyPair
+    Risk: PrivilegeEscalation
+    Severity: medium
+  CreateNetworkAclEntry:
+    Category: NetworkSecurity
+    Description: Creates a rule attached to subnets that can allow or deny traffic
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: NetworkAccessCircumvention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateNetworkAclEntry.html
+  CreateRoute:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes bypassing security controls
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateRoute.html
+  CreateVpcEndpoint:
+    Category: NetworkSecurity
+    Description: This action allows a user to open a VPC directly to S3, bypassing any firewall or CASB.
+    RelatedAPICalls:
+      - ec2:ModifyVpcEndpoint
+      - ec2:DeleteVpcEndpoints
+    Risk: DataLossPrevention
+    Severity: high
+  CreateVpcPeeringConnection:
+    Category: NetworkSecurity
+    Description: This action allows a user to peer various VPC networks
+    RelatedAPICalls:
+    - ec2:DeleteVpcPeeringConnection
+    - ec2:RejectVpcPeeringConnection
+    - ec2:AcceptVpcPeeringConnection
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  CreateVpnConnection:
+    Category: NetworkSecurity
+    Description: This action allows a user to link a cloud network with an on-prem network
+    RelatedAPICalls:
+    - ec2:DeleteVpnConnection
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  CreateVpnConnectionRoute:
+    Category: NetworkSecurity
+    Description: Creates a static route associated with a VPN connection between an existing virtual private gateway and a VPN customer gateway. The static route allows traffic to be routed from the virtual private gateway to the VPN customer gateway.
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+  DeleteNetworkAcl:
+    Category: NetworkSecurity
+    Description: deletes a rule attached to subnets that can allow or deny traffic
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: NetworkAccessCircumvention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteNetworkAcl.html
 
-  - s3:PutBucketVersioning:
+  DeleteNetworkAclEntry:
+    Category: NetworkSecurity
+    Description: deletes a rule attached to subnets that can allow or deny traffic
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteNetworkAclEntry.html
+  DeleteRoute:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes potentially bypassing security controls
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteRoute.html
+  DeleteVpnConnectionRoute:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes potentially bypassing security controls
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+  DisassociateRouteTable:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes bypassing security controls
+    RelatedAPICalls:
+    - ec2:CreateRouteTable
+    - ec2:DeleteRouteTable
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+  DisableVgwRoutePropagation:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes potentially bypassing security controls
+    RelatedAPICalls:
+    - ec2:EnableVgwRoutePropagation
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DisableVgwRoutePropagation.html
+
+  EnableVgwRoutePropagation:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes potentially bypassing security controls
+    RelatedAPICalls:
+    - ec2:DisableVgwRoutePropagation
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DisableVgwRoutePropagation.html
+
+  ImportKeyPair:
+    Category: AccessControl
+    Description: This action allows a user create themselves an SSH keypair for access to an EC2 Instance. If this key is not properly managed, access to the instance by authorized personnell can be impaired
+    RelatedAPICalls:
+    - ec2:DeleteKeyPair
+    - ec2:CreateKeyPair
+    Risk: PrivilegeEscalation
+    Severity: medium
+
+  ModifySubnetAttribute:
+    Category: NetworkSecurity
+    Description: This action allows a user to enable instances to get public IP addresses by default. This only works in conjunction with routing changes
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: medium
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifySubnetAttribute.html
+  ModifyVpcEndpoint:
+    Category: NetworkSecurity
+    Description: This action allows a user to open a VPC directly to S3, bypassing any firewall or CASB.
+    RelatedAPICalls:
+      - ec2:CreateVpcEndpoint
+      - ec2:DeleteVpcEndpoints
+    Risk: DataLossPrevention
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyVpcEndpoint.html
+
+  PurchaseReservedInstancesOffering:
+    Category: Compliance
+    Description: This action allows a user to commit purchase an RI thus commiting your organization to a higher cost
+    Risk: 
+      - FinancialControl
+    Severity: medium
+
+  ReplaceNetworkAclAssociation:
+    Category: NetworkSecurity
+    Description: Changes which network ACL a subnet is associated with. Can be used to replace NACL entries
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: NetworkSegmentationViolation
+    Severity: high
+    URL: http://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReplaceNetworkAclAssociation.html
+  ReplaceNetworkAclEntry:
+    Category: NetworkSecurity
+    Description: FNORD
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  ReplaceRoute:
+    Category: NetworkSecurity
+    Description: FNORD
+    RelatedAPICalls:
+    - ec2:FNORD
+    Risk: NetworkSegmentationViolation
+    Severity: high
+  ReplaceRouteTableAssociation:
+    Category: NetworkSecurity
+    Description: This action allows a user to modify routes bypassing security controls
+    RelatedAPICalls:
+    - ec2:CreateRouteTable
+    - ec2:DeleteRouteTable
+    Risk: 
+      - NetworkSegmentationViolation
+      - DataLossPrevention
+    Severity: high
+
+iam:
+  CreateAccountAlias:
+    Category: AccountManagement
+    Description: Modifies the login name of an account (and what it's called in other places)
+    RelatedAPICalls:
+      - iam:DeleteAccountAlias
+    Risk: AccountTakeOver
+    Severity: low
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
+  CreateSAMLProvider:
+    Category: IdentityManagement
+    Description: Used to create trust with an external identity store
+    RelatedAPICalls:
+      - iam:UpdateSAMLProvider
+    Risk: AccountTakeOver
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateSAMLProvider.html
+  DeleteAccountPasswordPolicy:
+    Category: AccountManagement
+    Description: Password Policy enforces complexity, rotation and reuse for AWS Console Access. This should be monitored for users or admins deliberatly weakening this in violation of corporate standards
+    RelatedAPICalls:
+    - iam:UpdateAccountPasswordPolicy
+    Risk: PolicyCircumvention
+    Severity: medium
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteAccountPasswordPolicy.html
+  PutRolePolicy:
+    Category: AccessControl
+    Description: This action allows a user to assign permissions to a role. Can be used for privilege escalation
+    Risk: PrivilegeEscalation
+    Severity: medium
+  UpdateAccountPasswordPolicy:
+    Category: AccountManagement
+    Description: Password Policy enforces complexity, rotation and reuse for AWS Console Access. This should be monitored for users or admins deliberatly weakening this in violation of corporate standards
+    RelatedAPICalls:
+      - iam:DeleteAccountPasswordPolicy  
+    Risk: PolicyCircumvention
+    Severity: medium
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccountPasswordPolicy.html
+  UpdateSAMLProvider:
+    Category: IdentityManagement
+    Description: Used to update/replace a trust with an external identity store
+    RelatedAPICalls:
+      - iam:CreateSAMLProvider
+    Risk: AccountTakeOver
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateSAMLProvider.html
+
+# fdsfsa
+
+organizations:
+  AcceptHandshake:
+    Category: AccountManagement
+    Description: Accepts the invitation to join an organization
+    RelatedAPICalls:
+    - organizations:InviteAccountToOrganization
+    Risk: AccountTakeOver
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_AcceptHandshake.html
+  CreateAccount:
+    Category: AccountManagement
+    Description: Creates a new account paid for by the current account. 
+    Risk: 
+    - AccountTakeOver
+    - FinancialControl
+    Severity: high
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_CreateAccount.html
+  DeletePolicy:
+    Category: AccountManagement
+    Description: Deletes a policy that applies to a sub-account
+    RelatedAPICalls:
+    - organizations:DetachPolicy
+    - organizations:UpdatePolicy
+    Risk: PrivilegeEscalation
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_DeletePolicy.html
+  DetachPolicy:
+    Category: AccountManagement
+    Description: Removes a policy that applies to a sub-account
+    RelatedAPICalls:
+    - organizations:DeletePolicy
+    - organizations:UpdatePolicy    
+    Risk: PrivilegeEscalation
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_DetachPolicy.html
+  InviteAccountToOrganization:
+    Category: AccountManagement
+    Description: Adds an existing account to your monthly bill
+    RelatedAPICalls:
+    - organizations:AcceptHandshake
+    Risk: 
+    - AccountTakeOver
+    - FinancialControl
+    Severity: high
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_InviteAccountToOrganization.html
+  LeaveOrganization:
+    Category: AccountManagement
+    Description: Removes an account from your control and monthly bill. This is called by the sub-account
+    RelatedAPICalls:
+    - organizations:RemoveAccountFromOrganization
+    Risk: AccountTakeOver
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_LeaveOrganization.html
+  MoveAccount:
+    Category: AccountManagement
+    Description: Changes where in the OU structure an account is, and what policies are applied to it
+    RelatedAPICalls:
+    - organizations:InviteAccountToOrganization
+    Risk: PrivilegeEscalation
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_MoveAccount.html
+  RemoveAccountFromOrganization:
+    Category: AccountManagement
+    Description: Kicks a sub-account out of your master account.
+    RelatedAPICalls:
+    - organizations:InviteAccountToOrganization
+    Risk: AccountTakeOver
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_RemoveAccountFromOrganization.html 
+  UpdatePolicy:
+    Category: AccountManagement
+    Description: Modifies the policy that applies to a sub-account
+    RelatedAPICalls:
+    - organizations:DetachPolicy
+    - organizations:DeletePolicy
+    Risk: PrivilegeEscalation
+    Severity: critical
+    URL: http://docs.aws.amazon.com/organizations/latest/APIReference/API_UpdatePolicy.html    
+
+
+s3:
+  PutBucketVersioning:
     Category: Audit
     Description: This action could disable protections implemented for preserving audit logs stored in S3
+    Severity: medium
     URL: http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTVersioningStatus.html
+    Risk: EvidenceDestruction
 
-
-Low:
-  - ec2:DeleteCustomerGateway:
-  - ec2:CreateCustomerGateway:
-  - ec2:CreateVpc:
-  - ec2:ModifyVpcAttribute:
-  - ec2:DeleteVpc:
-  - ec2:CreateSubnet:
-  - ec2:DeleteSubnet:
