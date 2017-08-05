@@ -288,6 +288,24 @@ ec2:
     Severity: high
 
 iam:
+  AttachGroupPolicy:
+    Category: AccessControl
+    Description: Attaches the specified managed policy to the specified IAM group. Can be used to grant additional privileges
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachGroupPolicy.html
+  AttachRolePolicy:
+    Category: AccessControl
+    Description: Attaches the specified managed policy to the specified IAM role. Can be used to grant additional privileges
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachRolePolicy.html
+  AttachUserPolicy:
+    Category: AccessControl
+    Description: Attaches the specified managed policy to the specified user. Can be used to grant additional privileges
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachUserPolicy.html
   CreateAccountAlias:
     Category: AccountManagement
     Description: Modifies the login name of an account (and what it's called in other places)
@@ -296,6 +314,20 @@ iam:
     Risk: AccountTakeOver
     Severity: low
     URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
+  CreatePolicy:
+    Category: AccessControl
+    Description: Creates a new managed policy for your AWS account. Can be used to grant additional privileges. A Created Policy must then be attached
+    Risk: PrivilegeEscalation
+    Severity: medium
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreatePolicy.html
+  CreatePolicyVersion:
+    Category: AccessControl
+    Description: Creates a new version of the specified managed policy. Can be used to grant additional privileges. A Created Policy Version must first be set to Default to be effective. 
+    RelatedAPICalls:
+    - iam:SetDefaultPolicyVersion
+    Risk: PrivilegeEscalation
+    Severity: medium
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_CreatePolicyVersion.html
   CreateSAMLProvider:
     Category: IdentityManagement
     Description: Used to create trust with an external identity store
@@ -312,11 +344,64 @@ iam:
     Risk: PolicyCircumvention
     Severity: medium
     URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteAccountPasswordPolicy.html
+  DeletePolicy:
+    Category: AccessControl
+    Description: Deletes the specified managed policy. Before you can delete a managed policy, you must first detach the policy from all users, groups, and roles that it is attached to, and you must delete all of the policy's versions. Can be used to remove a DENY policy, granting privileges explictly denied
+    Risk: PrivilegeEscalation
+    RelatedAPICalls:
+    - iam:DeletePolicyVersion
+    Severity: low
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DeletePolicy.html
+  DeletePolicyVersion:
+    Category: AccessControl
+    Description: Deletes the specified version from the specified managed policy. You cannot delete the default version from a policy using this API, that requires DeletePolicy. 
+    RelatedAPICalls:
+      - iam:DeletePolicy
+    Risk: PrivilegeEscalation
+    Severity: low
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DeletePolicyVersion.html
+  DetachGroupPolicy:
+    Category: AccessControl
+    Description: Removes the specified managed policy from the specified IAM group. Can be used to remove a DENY policy, granting privileges explictly denied
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DetachGroupPolicy.html
+  DetachRolePolicy:
+    Category: AccessControl
+    Description: Removes the specified managed policy from the specified role. Can be used to remove a DENY policy, granting privileges explictly denied
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DetachRolePolicy.html
+  DetachUserPolicy:
+    Category: AccessControl
+    Description: Removes the specified managed policy from the specified user. Can be used to remove a DENY policy, granting privileges explictly denied
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_DetachUserPolicy.html
+  PutGroupPolicy:
+    Category: AccessControl
+    Description: Adds or updates an inline policy document that is embedded in the specified IAM group. Can be used for privilege escalation
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_PutGroupPolicy.html
   PutRolePolicy:
     Category: AccessControl
-    Description: This action allows a user to assign permissions to a role. Can be used for privilege escalation
+    Description: Adds or updates an inline policy document that is embedded in the specified IAM role. Can be used for privilege escalation
     Risk: PrivilegeEscalation
-    Severity: medium
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_PutRolePolicy.html
+  PutUserPolicy:
+    Category: AccessControl
+    Description: Adds or updates an inline policy document that is embedded in the specified IAM user. Can be used for privilege escalation
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_PutUserPolicy.html
+  SetDefaultPolicyVersion:
+    Category: AccessControl
+    Description: Sets the specified version of the specified policy as the policy's default (operative) version. This action affects all users, groups, and roles that the policy is attached to. Can be used for privilege escalation
+    Risk: PrivilegeEscalation
+    Severity: high
+    URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_SetDefaultPolicyVersion.html
   UpdateAccountPasswordPolicy:
     Category: AccountManagement
     Description: Password Policy enforces complexity, rotation and reuse for AWS Console Access. This should be monitored for users or admins deliberatly weakening this in violation of corporate standards
@@ -333,8 +418,6 @@ iam:
     Risk: AccountTakeOver
     Severity: high
     URL: http://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateSAMLProvider.html
-
-# fdsfsa
 
 organizations:
   AcceptHandshake:
